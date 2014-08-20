@@ -2,7 +2,7 @@
 
 ##Overview
 
-Following on [Klingenstein, Hitchcock, and DeDeo 2014)'s work on the "Old Bailey" records](http://www.pnas.org/content/111/26/9419.full), the Roget tools are a Python library for tracking broad semantic categories in bodies of text using the top-down hierarchical structure of Peter Mark Roget's *Thesaurus*. These tools were derived from the 1911 index to and full text of the *Thesaurus* [available from Project Gutenberg](http://www.gutenberg.org/ebooks/search/?query=roget) and were generated using 1. automated regular expression text extraction on the [index](http://www.gutenberg.org/cache/epub/10681/pg10681.txt) and 2. semi-automated reconstruction of the hierarchy mirrored in the chapter headings of the [full 1911 edition](http://www.gutenberg.org/cache/epub/22/pg22.txt). 
+Following on [Klingenstein, Hitchcock, and DeDeo 2014)'s work on the "Old Bailey" records](http://www.pnas.org/content/111/26/9419.full), the Roget Tools is a Python library for tracking broad semantic categories in bodies of text using the top-down hierarchical structure of Peter Mark Roget's *Thesaurus*. These tools were derived from the 1911 index to and full text of the *Thesaurus* [available from Project Gutenberg](http://www.gutenberg.org/ebooks/search/?query=roget) and were generated using 1. automated regular expression text extraction on the [index](http://www.gutenberg.org/cache/epub/10681/pg10681.txt) and 2. semi-automated reconstruction of the hierarchy mirrored in the chapter headings of the [full 1911 edition](http://www.gutenberg.org/cache/epub/22/pg22.txt). 
 
 This library opens up several methods of automated textual analysis. First, it enables Python-readable categorization of individual words at different levels of abstraction (i.e., specificity of semantic categorization). It also allows the user to return the full hierarchical path of all a given word's categories to the top of Roget's taxonomy, simultaneously measuring the path length. In addition to being applicable to individual words, both of these methods can be automatically applied to large samples of text, replacing words with their semantic categories. These tools can also return the distance (in network edges) between any two words in the *Thesaurus* or any two nodes in the hierarchy. (See Jarmasz and Szpakowicz (2012) on the relevance of this measure.) Finally, given a text---be it a list of randomly selected words, a portion of a literary text, or part of the output from a topic modeling algorithm---the Roget tools can return the node or nodes that most accurately represent that text's semantic character; this representativeness is measured as the minimum average distance in edges from each word in the list to the selected node.
 
@@ -12,9 +12,10 @@ This library opens up several methods of automated textual analysis. First, it e
 
 As yet no standard Python installation is available. Instead, download roget.zip and copy the contents into your working directory.
 
+
 ###Use
 
-Roget Tools is a Python class, so an object of class Roget needs to be instantiated for use. First, run
+Roget Tools is a Python class, so an object of class Roget needs to be instantiated before use. First, run
 <pre><code>import roget</code></pre>
 to make the class available. Next, instantiate a class object by running, e.g.,
 <pre><code>r = roget.Roget()</code></pre>
@@ -23,6 +24,20 @@ In this example, variables can be accessed via
 and functions via
 <pre><code>r.function_name()</code></pre>
 
+
+###NetworkX
+
+Exportability to NetworkX may be desirable for some applications; to eliminate dependencies, however, Roget Tools does not include a NetworkX export function. To do so, use the following code as a model:
+<pre><code>
+	import networkx as nx
+import roget
+r = roget.Roget()
+X = nx.DiGraph()
+for x in r.node\_codes.keys():
+    X.add_node(x)
+edgelist = r.full_childparent.items()
+X.add\_edges\_from(edgelist)
+</code></pre>
 
 ##Variables
 
