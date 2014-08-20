@@ -6,6 +6,24 @@ Following on [Simon DeDeo et al. (2014)'s work on the "Old Bailey" records](http
 
 This library opens up several methods of automated textual analysis. First, it enables Python-readable categorization of individual words at different levels of abstraction (i.e., specificity of semantic categorization). It also allows the user to return the full hierarchical path of all a given word's categories to the top of Roget's taxonomy, simultaneously measuring the path length. In addition to being applicable to individual words, both of these methods can be automatically applied to large samples of text, replacing words with their semantic categories. These tools can also return the distance (in network edges)^[See Jarmasz and Szpakowicz (2012) on the relevance of this measure.] between any two words in the *Thesaurus* or any two nodes in the hierarchy. Finally, given a text---be it a list of randomly selected words, a portion of a literary text, or part of the output from a topic modeling algorithm---the Roget tools can return the node or nodes that most accurately represent that text's semantic character; this representativeness is measured as the minimum average distance in edges from each word in the list to the selected node.
 
+##Instructions
+
+###Installation
+
+As yet no standard Python installation is available. Instead, download roget.zip and copy the contents into your working directory.
+
+###Use
+
+Roget Tools is a Python class, so an object of class Roget needs to be instantiated for use. First, run
+<pre><code>import roget</code></pre>
+to make the class available. Next, instantiate a class object by running, e.g.,
+<pre><code>r = roget.Roget()</code></pre>
+In this example, variables can be accessed via
+<pre><code>r.variable_name</code></pre>
+and functions via
+<pre><code>r.function_name()</code></pre>
+
+
 ##Variables
 
 What follows is a list of the variables included in the Roget class. Some explanation of the data format is in order: every word in the thesaurus is linked to a base category, which are coded as "cat0001" through "cat1000". All nodes in the hierarchy also have codes, and the coding convention indicates their distance from the top node "WORDS". More specifically: "WORDS", "0"; classes, "A-F"; divisions, "I-IV"; sections, "1,2,3" etc.; sub-sections, "a-zz"; and everything below indicated by e.g. appending "1-9" to the parent code. The semantic category corresponding to each of these nodes and categories can be accessed through the self.node\_codes dictionary. The reverse can be accessed through the self.code\_nodes dictionary. 
