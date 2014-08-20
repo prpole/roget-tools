@@ -26,7 +26,7 @@ class Roget:
         with open('roget/num_cat.txt','r') as f:
             self.num_cat = cPickle.load(f)
 
-    def wordSplitClean(self,myText,lower=True):
+    def make_wordlist(self,myText,lower=True):
         '''Removes punctuation and returns list of words; 'lower' flag determines case'''
         puncMarks = [',', '.', '?', '!', ':', ';', '\'', '\"', '(', ')', '[', ']', '-']
         for item in puncMarks:
@@ -59,7 +59,7 @@ class Roget:
         '''Given a text (type str), makes a list of words 
         and categorizes each up n levels from the base category; 
         words are replaced with their categories and returned as a list'''
-        wordlist = self.wordSplitClean(text)
+        wordlist = self.make_wordlist(text)
         newlist = [ self.word_cat(x,levels=levels) for x in wordlist ]
         bagofwords = []
         for x in newlist:
@@ -293,9 +293,9 @@ class Roget:
         node_distances_named = [ (node,self.node_codes[node],dist,(float(dist)/len(wordlist))) for (node,dist) in node_distances ]
         distlist = [ x[1] for x in node_distances ]
         mindist = min(distlist)
-        mindist_nodes = [ (self.node_codes[node],dist,(dist/float(len(wordlist)))) for (node,dist) in node_distances if dist == mindist ]
+        mindist_nodes = [ (node,self.node_codes[node],dist,(dist/float(len(wordlist)))) for (node,dist) in node_distances if dist == mindist ]
         if N>0:
-            return mindist_nodes,node_distances_named[:N]
+            node_distances_named[:N]
         else:
             return mindist_nodes
 
