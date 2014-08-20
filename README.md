@@ -14,37 +14,61 @@ These basic functions have been rendered in several permuations and are loaded u
 
 ###Basic Thesaurus Dictionaries
 
-* self.thes\_dict - dictionary of word keys and category codes as values
-* self.thes\_cat - dictionary of category code keys and words contained by that category as values
-* self.thes\_cat\_list - thes\_cat formatted as a list
+* **self.thes\_dict** - dictionary of word keys and category codes as values
+
+* **self.thes\_cat** - dictionary of category code keys and words contained by that category as values
+
+* **self.thes\_cat\_list** - thes\_cat formatted as a list
+
 
 ###Node Code -- Node Name Dictionaries
 
-* self.num\_cat - dictionary of category code keys and category names as values
-* self.cat\_num - dictionary of category name (always all caps) keys and category codes as values
-* self.node\_codes - dictionary of node-code keys and node names (all caps) as values
-* self.code\_nodes - dictionary of node-name keys and node codes as values
+* **self.num\_cat** - dictionary of category code keys and category names as values
+
+* **self.cat\_num** - dictionary of category name (always all caps) keys and category codes as values
+
+* **self.node\_codes** - dictionary of node-code keys and node names (all caps) as values
+
+* **self.code\_nodes** - dictionary of node-name keys and node codes as values
+
 
 ###Hierarchical Network Relationship Dictionaries
 
-* self.basecat\_dict - dictionary of parent-child relationships for all nodes with base categories as children
-* self.basecat\_parent - dictionary of child-parent relationships with base category code keys and parent node codes as values
-* self.parent\_dict - dictionary of parent-child relationships for all nodes with non-category children
-* self.node\_childparent - dictionary of child-parent relationships for all non-base-category node codes
-* self.full\_childparent - dictionary of child-parent relationships for all nodes in hierarchy, including base categories
+* **self.basecat\_dict** - dictionary of parent-child relationships for all nodes with base categories as children
+
+* **self.basecat\_parent** - dictionary of child-parent relationships with base category code keys and parent node codes as values
+
+* **self.parent\_dict** - dictionary of parent-child relationships for all nodes with non-category children
+
+* **self.node\_childparent** - dictionary of child-parent relationships for all non-base-category node codes
+
+* **self.full\_childparent** - dictionary of child-parent relationships for all nodes in hierarchy, including base categories
+
 
 ##Methods
 
 * **self.make\_wordlist(text,lower=True)** - given a text, return wordlist with punctuation removed and all words made lowercase unless lower=False
+
 * **self.word\_cat(word,levels=0)** - given a word, returns all base categories containing that word, up levels=n levels from the base category node
+
 * **self.categorize\_words(text,levels=0)** - given a text, makes a wordlist and replaces each entry with the node levels=n levels up from the base category; if word is not in thesaurus, retains the word and assigns category code '0000'
+
 * **self.category\_freqs(text,levels=0)** - given a text, return a dictionary of frequencies for categories levels=n levels up from the base category; excludes words not found in thesaurus
+
 * **self.word\_path(word)** - given a word, return the full path from each base category up to the top node ('WORDS') and the distance of each path node from the base category; format list of tuples: [(distance,node),...]
+
 * **self.return\_cat\_words(cat)** - given a base category (code or name) return all words it contains
+
 * **self.return\_word\_cat\_words(word)** - given a word, return all category names and other words in those categories; output format list of tuples: [(category-name,[wordlist]),...]
+
 * **self.distance\_to\_node(word,node)** - given a word and a node, return the minimum distance (in edges) between word's base category and target node
+
 * **self.two\_word\_common_node(word1,word2)** - given two words, return a list of all shared nodes and the distance between the two words via that node; output format list of tuples: [(distance-via-node,node),...]
+
 * **self.two\_word\_distance(word1,word2)** - given two words, return only minimum distance in edges between them; output format integer
+
 * **self.cat\_path(node)** - given node, returns path from node to top node ('WORDS') and distance from start node to node in path; output format list of tuples: [(distance,node),...]
+
 * **self.two\_cat\_distance(category1,category2)** - given two categories, return only minimum distance; output format integer
+
 * **self.clustering_node(wordlist,verbose=False,N=0)** - given a list of words, calculate aggregate and average distance from words' base categories to every node in hierarchy, then return the node code, node, aggregate distance, and average distance for every node with the minimum aggregate distance; if N>0, return the same for N nearest nodes; output format list of tuples: [(node code, node, aggregate distance, average distance),...]
