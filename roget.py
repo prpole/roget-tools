@@ -308,7 +308,7 @@ class Roget:
         else:
             return mindist_nodes
 
-    def cat_array_by_file(self,folder,n=1000,csv=False):
+    def cat_array_by_file(self,folder,csv=False):
         '''accepts name of folder containing only files'''
         import pandas as pd
         import numpy as np
