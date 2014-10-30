@@ -80,6 +80,15 @@ class Roget:
                 fcounts[x] = 1
         return fcounts
 
+    def freq_of_all_cats(self,text):
+        freqlist = self.category_freqs(text)
+        fulldict = {x:0 for x in self.num_cat.keys()}
+        for key in freqlist.keys():
+            if key[1] in fulldict:
+                fulldict[key[1]] = freqlist[key]
+        newdict = {(self.num_cat[x],x):fulldict[x] for x in fulldict.keys()}
+        return sorted(newdict.items(),key=lambda  x: x[0][1])
+
     def word_path(self,word):
         '''returns full hierarchical paths for word
         from base categories to parent node "WORDS" (code '0');
@@ -293,14 +302,34 @@ class Roget:
         node_distances_named = [ (node,self.node_codes[node],dist,(float(dist)/len(wordlist))) for (node,dist) in node_distances ]
         distlist = [ x[1] for x in node_distances ]
         mindist = min(distlist)
-        mindist_nodes = [ (node,self.node_codes[node],dist,(dist/float(len(wordlist)))) for (node,dist) in node_distances if dist == mindist ]
+        mindist_nodes = [ (node,self.node_codes[node],dist,(float(dist)/len(wordlist))) for (node,dist) in node_distances if dist == mindist ]
         if N>0:
-            node_distances_named[:N]
+            return node_distances_named[:N]
         else:
             return mindist_nodes
 
-    ##next: working on "4. given word and path distance, return all other words that are path distance"
-
-    ##to do : dump into network x, different levels of coarse-graining (use x[0] for x in word_path(word); could make option in categorize-word function)
+    def cat_array_by_file(self,folder,n=1000,csv=False):
+        '''accepts name of folder containing only files'''
+        import pandas as pd
+        import numpy as np
+        from os import listdir
+        flist = listdir(folder)[1:]
+        headlist = [ x[:-4] for x in flist ]
+        with open(folder+flist[0],'r') as thefile:
+            reader = thefile.read()
+            thingy = self.freq_of_all_cats(reader)
+            indexlist = [ x[0] for x in thingy ]
+        newarray = []
+        for f in flist:
+            with open(folder+f,'r') as current_file:
+                text = current_file.read()
+            freqs = self.freq_of_all_cats(text)
+            newarray.append([ x[1] for x in freqs])
+        nparray = np.array(newarray,dtype=int)
+        nparray = np.transpose(nparray)
+        df = pd.DataFrame(nparray,index=indexlist,columns=headlist)
+        if csv:
+            df.to_csv(folder+'summary.csv')
+        return df
 
 
