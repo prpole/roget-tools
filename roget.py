@@ -25,6 +25,26 @@ class Roget:
             self.full_childparent = cPickle.load(f)
         with open('roget/num_cat.txt','r') as f:
             self.num_cat = cPickle.load(f)
+            
+    def add_custom_words(self,fid='roget/add_words.txt'):
+    ''' Load a file of words and connections into THES_DICT '''
+        try:
+            type(self.added_words) is list
+        except:
+            self.added_words = []
+        with open(fid,'rb') as f:
+            for line in f:
+                wd_pair = line.strip().split(',')
+                if wd_pair[0] not in self.thes_dict:
+                    self.thes_dict[wd_pair[0]] = [wd_pair[1],]
+                    self.added_words.append(wd_pair[0])
+                else:
+                    if wd_pair[1] not in self.thes_dict[wd_pair[0]]:
+                        self.thes_dict[wd_pair[0]].append(wd_pair[1])
+
+        self.added_words = list(set(self.added_words))
+        print "Words Added to THES_DICT:"
+        print ' '.join(self.added_words)
 
     def make_wordlist(self,myText,lower=True):
         '''Removes punctuation and returns list of words; 'lower' flag determines case'''
