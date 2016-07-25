@@ -56,10 +56,14 @@ class Roget:
         return cats
 
     def categorize_words(self,text,levels=0):
-        '''Given a text (type str), makes a list of words 
+        '''Given a text (type str) or list of tokens (type list) , 
+        makes a list of lowercase words with nonalphas thrown out
         and categorizes each up n levels from the base category; 
         words are replaced with their categories and returned as a list'''
-        wordlist = self.make_wordlist(text)
+        if type(text) == 'str':
+            wordlist = self.make_wordlist(text)
+        else:
+            wordlist = [ x.lower() for x in text if x.isalpha() ]
         newlist = [ self.word_cat(x,levels=levels) for x in wordlist ]
         bagofwords = []
         for x in newlist:
@@ -283,7 +287,7 @@ class Roget:
             else:
                 wordlist.append(word)
         #notwords = list(set(notwords))
-        word_basecats = [ ]
+        word_basecats = []
         if verbose:
             print "excluded words:",notwords
         node_distances = []
